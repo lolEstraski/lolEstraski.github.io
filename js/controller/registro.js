@@ -1,3 +1,4 @@
-import { registrarUsuario } from '../api/pasajero';
+import { registrarPasajero } from '../api/pasajero.js';
 
-logoutButton.addEventListener('click', registrarUsuario)
+const registroButton = document.querySelector('#registrar');
+registroButton.addEventListener('click', registrarPasajero)

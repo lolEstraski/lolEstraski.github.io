@@ -2,6 +2,7 @@ export const API_HOST = 'http://localhost:8080';
 export const SYSTEM_TOKEN = 'c3lzdGVtOnRQdWJsaWNv';
 
 export function doLogin(event) {
+    event.preventDefault();
     const nombreUsuario = document.querySelector('#nombreUsuario').value;
     const pass = document.querySelector('#password').value;
     if (!nombreUsuario || pass === 'undefined') {
@@ -9,7 +10,12 @@ export function doLogin(event) {
     } else {
         postLogin(nombreUsuario, pass).then(response => {
             localStorage.setItem("login", JSON.stringify(response));
-            window.location.href = "/dashboard.html";
+            localStorage.setItem("userToken", btoa(nombreUsuario+ ':' + pass));
+            if( response.rol == 'ADMIN'){
+                window.location.href = "/ruta.html";
+            } else {
+                window.location.href = "/dashboard.html";
+            }
         });
     }
 }
@@ -22,7 +28,7 @@ export function doLogout(event) {
 
 function postLogin(nombreUsuario, pass) {
     let promise = new Promise((resolve, reject) => {
-        fetch( API_HOST + '/admin', {
+        fetch( API_HOST + '/pasajero/auth', {
             method: "POST",
             body: JSON.stringify({
               nombreUsuario: nombreUsuario,
@@ -35,7 +41,7 @@ function postLogin(nombreUsuario, pass) {
           }).then(response => {
             resolve(response.json());
         }).catch(err => {
-            console.log(err);
+            console.log(err.json());
             alert(err);
         });
     })

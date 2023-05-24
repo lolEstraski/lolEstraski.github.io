@@ -1,27 +1,22 @@
-export function CrearRuta(event) {
+import { API_HOST, SYSTEM_TOKEN } from './login.js';
 
-    const nombre =document.querySelector('#nombre');
-    const sentido=document.querySelector('#sentido');
-    const frecuencia=document.querySelector('#frecuencia');
-    const origen=document.querySelector('#origen');
-    const destino=document.querySelector('#destino');
-    const plataforma=document.querySelector('#plataforma');
-    const horarios=document.querySelector('#horarios');
+export function crearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
 
-    if (! nombre || sentido || frecuencia || origen || destino || plataforma || horarios  === 'undefined') {
+    if ( !nombre || !sentido || !frecuencia || !origen || !destino || !plataforma || !paradas  === 'undefined') {
         alert('seleccione los campos correspondientes');
     } else {
-        postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, horarios).then(response => {
-            window.location.href = "/dashboard.html";
+        postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas).then(response => {
+            alert("Ruta creada con exito");
+            window.location.href = "/admin.html";
         });
     }
 }
 
 
-function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, horarios) {
-    System.setProperty("http.agent", "Chrome");
+function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
+    const token = localStorage.getItem('userToken');
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
+        fetch(API_HOST+"/ruta", {
             method: "POST",
             body: JSON.stringify({
               nombre: nombre,
@@ -30,14 +25,15 @@ function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma
               origen: origen,
               destino: destino,
               plataforma:plataforma,
-              horarios:horarios
-
+              paradas: paradas
             }),
             headers: {
+                'Authorization': 'basic '+ token, 
               "Content-type": "application/json; charset=UTF-8"
             }
           }).then(response => {
-            resolve(response.json());
+            console.log(response);
+            resolve(response);
         }).catch(err => {
             console.log(err);
             alert(err);
@@ -166,19 +162,10 @@ function deleteElimnarRuta(id) {
     return promise;
 }
 
-export function obtenerRutas(event) {
-    getObtenerRutas().then(response => {
-            window.location.href = "/dashboard.html";
-        });
-    }
-
-function getObtenerRutas() {
-    System.setProperty("http.agent", "Chrome");
+export function getObtenerRutas() {
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/ruta", {
+        fetch(API_HOST+"/ruta/ruta", {
             method: "Get",
-            body: JSON.stringify({
-            }),
             headers: {
               "Content-type": "application/json; charset=UTF-8"
             }

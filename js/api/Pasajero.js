@@ -1,25 +1,28 @@
+import { API_HOST, SYSTEM_TOKEN } from './login.js';
+
 export function registrarPasajero(event) {
 
+    event.preventDefault();
     const cedula = document.querySelector('#cedula').value;
     const nombre=document.querySelector('#nombre').value;
-    const telefono =document.querySelector('#telefono');
-    const email=document.querySelector('#email');
-    const pass=document.querySelector('#pass');
+    const telefono =document.querySelector('#telefono').value;
+    const email=document.querySelector('#email').value;
+    const pass=document.querySelector('#pass').value;
 
-    if (!nombre || cedula || telefono || email || pass === 'undefined') {
+    if (!nombre || !cedula || !telefono || !email || !pass === 'undefined') {
         alert('seleccione los campos correspondientes');
     } else {
         postRegistro(nombre,cedula,telefono,email,pass).then(response => {
-            window.location.href = "/dashboard.html";
+            alert('Registro exitoso, verifique su correo');
+            window.location.href = "/index.html";
         });
     }
 }
 
 
 function postRegistro(nombre,cedula,telefono,email,pass) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/pasajero", {
+        fetch(API_HOST + "/pasajero", {
             method: "POST",
             body: JSON.stringify({
               nombre: nombre,
@@ -29,6 +32,7 @@ function postRegistro(nombre,cedula,telefono,email,pass) {
               pass,
             }),
             headers: {
+                "Authorization": "basic "+ SYSTEM_TOKEN,
               "Content-type": "application/json; charset=UTF-8"
             }
           }).then(response => {
