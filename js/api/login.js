@@ -1,4 +1,4 @@
-export const API_HOST = 'http://localhost:8080';
+export const API_HOST = 'https://pruebaimap.uc.r.appspot.com';
 export const SYSTEM_TOKEN = 'c3lzdGVtOnRQdWJsaWNv';
 
 export function doLogin(event) {
