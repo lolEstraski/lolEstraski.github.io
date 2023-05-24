@@ -12,9 +12,9 @@ export function doLogin(event) {
             localStorage.setItem("login", JSON.stringify(response));
             localStorage.setItem("userToken", btoa(nombreUsuario+ ':' + pass));
             if( response.rol == 'ADMIN'){
-                window.location.href = "/ruta.html";
+                window.location.href = "ruta.html";
             } else {
-                window.location.href = "/dashboard.html";
+                window.location.href = "dashboard.html";
             }
         });
     }
