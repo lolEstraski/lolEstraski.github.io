@@ -5,7 +5,7 @@ const loginTitle = document.querySelector('#userName');
 
 const login = JSON.parse(localStorage.getItem('login'));
 
-loginTitle.innerText = login.nombre;
+loginTitle.innerText = 'login.nombre';
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
 
@@ -40,9 +40,11 @@ let rutas = [
       let cell = row.insertCell();
       let linkEditar = document.createElement("a");
       linkEditar.className = "btn btn-sm btn-outline-secondary";
+      linkEditar.id = element.id;
       let editar = document.createTextNode("Ver");
       linkEditar.appendChild(editar);
       cell.appendChild(linkEditar);
+      document.getElementById(element.id).addEventListener("click",renderMap);
 
     }
     
@@ -51,8 +53,11 @@ let rutas = [
   function listRutas(){
     getObtenerRutas().then(response => {
         rutas = response;
-        generateTableHead(table, rutas[0]);
-        generateTable(table, rutas);
+        if(rutas){
+
+          generateTableHead(table, rutas[0]);
+          generateTable(table, rutas);
+        }
     });
   }
 
@@ -60,10 +65,16 @@ let rutas = [
     window.location.href = "/ruta.html";
   }
 
+  function renderMap(event){
+    let ruta = rutas.filter(ruta => ruta.id == this.id)[0];
+    let origen = ruta.origen;
+    let destino = ruta.destino;
+    let map = document.querySelector('#map');
+    console.log('llamo render', origen, destino);
+    map.src = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyBCVdGMcZjYLIBRJAmNyh_3A3HJizfZ-yo&origin="+origen+"&destination="+destino+"&mode=driving"
+  }
+
   let table = document.querySelector("#tb-rutas");
   generateTableHead(table, []);
   generateTable(table, rutas);
   listRutas();
-
-  const btnCrearRuta = document.querySelector('#crearRuta');
-  btnCrearRuta.addEventListener('click', redirectToCrear);
