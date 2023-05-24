@@ -1,3 +1,5 @@
+import { API_HOST, SYSTEM_TOKEN } from './login';
+
 export function agregarRutaFavorita(event) {
 
     const nombre =document.querySelector('#nombre');
@@ -18,7 +20,7 @@ export function agregarRutaFavorita(event) {
 function  postAgregarRuta(nombre, sentido, frecuencia, origen, destino) {
     System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
+        fetch(API_HOST + "/ruta/favorita", {
             method: "POST",
             body: JSON.stringify({
               nombre: nombre,
