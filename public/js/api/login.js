@@ -9,7 +9,6 @@ export function doLogin(event) {
         alert('Debe ingresar un nombre de usuario y contraseña');
     } else {
         postLogin(nombreUsuario, pass).then(response => {
-            let body = response.json();
             localStorage.setItem("login", JSON.stringify(response));
             localStorage.setItem("userToken", btoa(nombreUsuario+ ':' + pass));
             if( response.rol == 'ADMIN'){
@@ -49,9 +48,7 @@ function postLogin(nombreUsuario, pass) {
             console.log('response', response);
             const form = document.querySelector('#login-form');
             form.classList.add("animate__rollOut");
-            
-            
-            resolve(response);
+            resolve(response.json());
         }).catch(err => {
             const toast = document.querySelector('#toast');
             const toaster = document.querySelector('#toaster');
