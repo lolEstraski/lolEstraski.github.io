@@ -1,4 +1,4 @@
-export const API_HOST = 'https://pruebaimap.uc.r.appspot.com';
+export const API_HOST = 'http://localhost:8080';
 export const SYSTEM_TOKEN = 'c3lzdGVtOnRQdWJsaWNv';
 
 export function doLogin(event) {
@@ -9,6 +9,7 @@ export function doLogin(event) {
         alert('Debe ingresar un nombre de usuario y contraseña');
     } else {
         postLogin(nombreUsuario, pass).then(response => {
+            let body = response.json();
             localStorage.setItem("login", JSON.stringify(response));
             localStorage.setItem("userToken", btoa(nombreUsuario+ ':' + pass));
             if( response.rol == 'ADMIN'){
@@ -26,7 +27,10 @@ export function doLogout(event) {
     window.location.href = "/index.html";
 }
 
+
 function postLogin(nombreUsuario, pass) {
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch( API_HOST + '/pasajero/auth', {
             method: "POST",
@@ -39,11 +43,25 @@ function postLogin(nombreUsuario, pass) {
               'Content-type': 'application/json; charset=UTF-8'
             }
           }).then(response => {
-            resolve(response.json());
+            if (response.status === 400) {
+                throw new Error('verifique sus credenciales e itente nuevamente');
+            }
+            console.log('response', response);
+            const form = document.querySelector('#login-form');
+            form.classList.add("animate__rollOut");
+            
+            
+            resolve(response);
         }).catch(err => {
-            console.log(err.json());
-            alert(err);
-        });
+            const toast = document.querySelector('#toast');
+            const toaster = document.querySelector('#toaster');
+            toast.textContent = err;
+            toaster.classList.add("fade");
+            toaster.classList.add("show");
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
+        
     })
     return promise;
 }

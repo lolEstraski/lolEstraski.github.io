@@ -9,7 +9,10 @@
     <title>Autenticate</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
-
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     
     <style>
@@ -72,7 +75,21 @@
   <body class="text-center">
     
 <main class="form-signin w-100 m-auto">
-  <form>
+<!-- Flexbox container for aligning the toasts -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+
+  <!-- Then put toasts within -->
+  <div id="toaster" class="animate__animated animate__bounce toast align-items-center text-white bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Error</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      <p id="toast"></p>
+    </div>
+  </div>
+</div>
+  <form id="login-form" class="animate__animated ">
     <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Ingresa tus credenciales</h1>
 
@@ -90,12 +107,15 @@
         <a href="/registro.html">Regristrarme</a>
       </label>
     </div>
-    <button id="login" class="w-100 btn btn-lg btn-primary">Autenticar</button>
+    <button id="login" class="w-100 btn btn-lg btn-primary">
+      <span id="loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+      Autenticar
+    </button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
   </form>
 </main>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
   <script type="module" src="./js/controller.js"></script>
   </body>
 </html>
