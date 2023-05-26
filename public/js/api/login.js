@@ -15,7 +15,7 @@ export function doLogin(event) {
                 window.location.href = "ruta.html";
             } else {
                 window.location.href = "dashboard.html";
-            }
+            } 
         });
     }
 }
