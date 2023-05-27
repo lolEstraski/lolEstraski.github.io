@@ -254,4 +254,35 @@ function getBuscarRutaConPlataforma() {
 }
 
 
+export function obtenerRutaNombre(event) {
 
+    const nombre = document.querySelector('#origen').value;
+    if (!nombre === 'undefined') {
+        alert('por favor verifique  los datos proporcionados ');
+    } else {
+        getobtenerRutaNombre(nombre).then(response => {
+            window.location.href = "/dashboard.html";
+        });
+    }
+}
+
+
+function getBuscarRutaNombre() {
+    System.setProperty("http.agent", "Chrome");
+    let promise = new Promise((resolve, reject) => {
+        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/{nombre}", {
+            method: "Get",
+            body: JSON.stringify({
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }).then(response => {
+            resolve(response.json());
+        }).catch(err => {
+            console.log(err);
+            alert(err);
+        });
+    })
+    return promise;
+}
