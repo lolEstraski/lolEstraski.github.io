@@ -12,6 +12,24 @@ export function crearRuta(nombre, sentido, frecuencia, origen, destino, platafor
     }
 }
 
+export function doGetParadasPorRuta(idRuta){
+    const token = localStorage.getItem('userToken');
+    let promise = new Promise((resolve, reject) => {
+        fetch(API_HOST+"/ruta/"+idRuta+"/parada", {
+            method: "GET",
+            headers: {
+              'Authorization': 'basic '+ token, 
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }).then(response => {
+            resolve(response.json());
+        }).catch(err => {
+            console.log(err);
+            alert(err);
+        });
+    })
+    return promise;
+}
 
 function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
     const token = localStorage.getItem('userToken');
@@ -97,8 +115,6 @@ export function actualizaRuta(event) {
     }
 }
 
-
-
 function patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plataforma, horarios) {
     System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
@@ -126,8 +142,6 @@ function patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plata
     return promise;
 }
 
-
-
 export function elimarRuta(event) {
 
     const id = document.querySelector('#id').value;
@@ -139,7 +153,6 @@ export function elimarRuta(event) {
         });
     }
 }
-
 
 function deleteElimnarRuta(id) {
     System.setProperty("http.agent", "Chrome");
@@ -179,8 +192,6 @@ export function getObtenerRutas() {
     return promise;
 }
 
-
-
 export function obtenerRutasOrigenDestino(event) {
 
     const origen = document.querySelector('#origen').value;
@@ -193,8 +204,6 @@ export function obtenerRutasOrigenDestino(event) {
         });
     }
 }
-
-
 
 function  getobtenerRutasOrigenDestino(origen, destino) {
     System.setProperty("http.agent", "Chrome");
@@ -217,7 +226,6 @@ function  getobtenerRutasOrigenDestino(origen, destino) {
     })
     return promise;
 }
-
 
 export function obtenerRutasConPlataforma(event) {
     getBuscarRutaConPlataforma().then(response => {

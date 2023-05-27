@@ -1,5 +1,5 @@
 import { doLogout } from './api/login.js';
-import { getObtenerRutas } from './api/ruta.js';
+import { getObtenerRutas, doGetParadasPorRuta } from './api/ruta.js';
 
 const loginTitle = document.querySelector('#userName');
 
@@ -66,12 +66,12 @@ let rutas = [
   }
 
   function renderMap(event){
-    let ruta = rutas.filter(ruta => ruta.id == this.id)[0];
-    let origen = ruta.origen;
-    let destino = ruta.destino;
-    let map = document.querySelector('#map');
-    console.log('llamo render', origen, destino);
-    map.src = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyBCVdGMcZjYLIBRJAmNyh_3A3HJizfZ-yo&origin="+origen+"&destination="+destino+"&mode=driving"
+    doGetParadasPorRuta(this.id).then(ruta=>{
+      let origen = ruta.origen;
+      let destino = ruta.destino;
+      let map = document.querySelector('#map');
+      map.src = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyBCVdGMcZjYLIBRJAmNyh_3A3HJizfZ-yo&origin="+origen+"&destination="+destino+"&waypoints="+ ruta.paradas.join('|'); +"&mode=driving"
+    });
   }
 
   let table = document.querySelector("#tb-rutas");
