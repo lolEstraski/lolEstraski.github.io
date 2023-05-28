@@ -46,6 +46,14 @@ let rutas = [
       cell.appendChild(linkEditar);
       document.getElementById(element.id).addEventListener("click",renderMap);
 
+
+      let linkFavorito = document.createElement("a");
+      linkFavorito.className = "btn btn-sm btn-outline-secondary";
+      let favorito = document.createTextNode("Agregar Favorito");
+      linkFavorito.appendChild(favorito);
+      cell.appendChild(linkFavorito);
+
+      document.getElementById(element.id).addEventListener("click",agregarAFavorito);
     }
     
   }
@@ -72,6 +80,10 @@ let rutas = [
       let map = document.querySelector('#map');
       map.src = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyBCVdGMcZjYLIBRJAmNyh_3A3HJizfZ-yo&origin="+origen+"&destination="+destino+"&waypoints="+ ruta.paradas.join('|'); +"&mode=driving"
     });
+  }
+
+  function agragarAFavorito(event){
+    //TODO: llamar api agregar favorito
   }
 
   let table = document.querySelector("#tb-rutas");
