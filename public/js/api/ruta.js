@@ -32,6 +32,8 @@ export function doGetParadasPorRuta(idRuta){
 }
 
 function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     const token = localStorage.getItem('userToken');
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST+"/ruta", {
@@ -55,7 +57,9 @@ function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
