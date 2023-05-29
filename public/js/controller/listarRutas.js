@@ -1,5 +1,5 @@
 import { doLogout } from '../api/login.js';
-import { getObtenerRutas } from '../api/ruta.js';
+import { getObtenerRutas, elimarRuta, doGetParadasPorRuta } from '../api/ruta.js';
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
 
@@ -24,7 +24,8 @@ let rutas = [
   
   function generateTable(table, data) {
     let tBody = table.createTBody();
-    for (let element of data) {
+    for (let i = 0; i < data.length; i++) {
+      let element = data[i];
       let row = tBody.insertRow();
       for (let key in element) {
         let cell = row.insertCell();
@@ -34,17 +35,37 @@ let rutas = [
       let cell = row.insertCell();
       let linkEditar = document.createElement("a");
       linkEditar.className = "btn btn-sm btn-outline-secondary";
+      linkEditar.id = i;
       let editar = document.createTextNode("Editar");
       linkEditar.appendChild(editar);
       cell.appendChild(linkEditar);
+      linkEditar.addEventListener("click",editarRuta);
 
       let linkEliminar = document.createElement("a");
       linkEliminar.className = "btn btn-sm btn-outline-secondary";
+      linkEliminar.id = i;
       let eliminar = document.createTextNode("Eliminar");
       linkEliminar.appendChild(eliminar);
       cell.appendChild(linkEliminar);
+      linkEliminar.addEventListener("click",eliminarRuta);
     }
     
+  }
+
+  function editarRuta(event) {
+    let rutaId =rutas[this.id].id;
+    doGetParadasPorRuta(rutaId).then(ruta=>{
+      localStorage.setItem('rutaEditar',JSON.stringify(ruta));
+      window.location.href = "/ruta.html";
+    });
+  }
+
+  function eliminarRuta(event) {
+    let rutaEliminar = rutas[this.id];
+    const result = confirm('Quiere eliminar la ruta: ' + rutaEliminar.nombre);
+    if(result) {
+      elimarRuta(rutaEliminar.id);
+    }
   }
 
   function listRutas(){

@@ -66,7 +66,6 @@ export function actualizarContrasena(event) {
 }
 
 function  patchActualizarContrasena(id,pass,nuevaContrasena) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+id+"/contrasena", {
             method: "patch",

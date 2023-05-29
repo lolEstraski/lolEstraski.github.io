@@ -1,5 +1,5 @@
 import { doLogout } from './api/login.js';
-import { getObtenerRutas, doGetParadasPorRuta } from './api/ruta.js';
+import { getObtenerRutas, doGetDireccionesPorRuta } from './api/ruta.js';
 
 const loginTitle = document.querySelector('#userName');
 
@@ -74,7 +74,7 @@ let rutas = [
   }
 
   function renderMap(event){
-    doGetParadasPorRuta(this.id).then(ruta=>{
+    doGetDireccionesPorRuta(this.id).then(ruta=>{
       let origen = ruta.origen;
       let destino = ruta.destino;
       let map = document.querySelector('#map');

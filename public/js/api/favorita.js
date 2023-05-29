@@ -18,7 +18,6 @@ export function agregarRutaFavorita(event) {
 
 
 function  postAgregarRuta(nombre, sentido, frecuencia, origen, destino) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST + "/ruta/favorita", {
             method: "POST",
@@ -59,7 +58,6 @@ export function buscarRutaFavorita(event) {
 
 
 function getBuscarRutaFavorita(nombre ,id) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
             method: "Get",
@@ -96,7 +94,6 @@ export function eliminarRutaFavorita(event) {
 
 
 function deleteEliminarFavorita(id) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
             method: "Delate",
@@ -132,7 +129,6 @@ export function obtenerRutasFavoritas(event) {
 
 
 function getObtenerRutasFavoritas(idPersona) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
             method: "Get",

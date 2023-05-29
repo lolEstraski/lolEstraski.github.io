@@ -12,10 +12,29 @@ export function crearRuta(nombre, sentido, frecuencia, origen, destino, platafor
     }
 }
 
-export function doGetParadasPorRuta(idRuta){
+export function doGetDireccionesPorRuta(idRuta){
     const token = localStorage.getItem('userToken');
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST+"/ruta/"+idRuta+"/parada", {
+            method: "GET",
+            headers: {
+              'Authorization': 'basic '+ token, 
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }).then(response => {
+            resolve(response.json());
+        }).catch(err => {
+            console.log(err);
+            alert(err);
+        })
+    })
+    return promise;
+}
+
+export function doGetParadasPorRuta(idRuta){
+    const token = localStorage.getItem('userToken');
+    let promise = new Promise((resolve, reject) => {
+        fetch(API_HOST+"/ruta/"+idRuta+"/paradas", {
             method: "GET",
             headers: {
               'Authorization': 'basic '+ token, 
@@ -80,9 +99,8 @@ export function buscarRuta(event) {
 
 
 function getBuscarRuta(id) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
+        fetch(API_HOST+"/ruta", {
             method: "Get",
             body: JSON.stringify({
               id:id
@@ -100,69 +118,67 @@ function getBuscarRuta(id) {
     return promise;
 }
 
+export function doPatchRuta(idParada, nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
 
-export function actualizaRuta(event) {
-
-    const nombre = document.querySelector('#nombre').value;
-    const frecuencia = document.querySelector('#frecuencia').value;
-    const sentido = document.querySelector('#sentido').value;
-    const origen = document.querySelector('#origen').value;
-    const destino = document.querySelector('#destino').value;
-    const plataforma= document.querySelector('#plataforma').value;
-    const horarios= document.querySelector('#horarios').value;
-    if (!nombre || sentido || frecuencia || origen || destino || plataforma || horarios === 'undefined') {
-        alert('por favor verifique los campos ');
+    if ( !nombre || !sentido || !frecuencia || !origen || !destino || !plataforma || !paradas  === 'undefined') {
+        alert('seleccione los campos correspondientes');
     } else {
-        patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plataforma, horarios).then(response => {
-            window.location.href = "/dashboard.html";
+        patchActualizarRuta(idParada, nombre, sentido, frecuencia, origen, destino, plataforma, paradas).then(response => {
+            alert("Ruta editada con exito");
+            window.location.href = "/admin.html";
         });
     }
 }
 
-function patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plataforma, horarios) {
-    System.setProperty("http.agent", "Chrome");
+function patchActualizarRuta(idParada, nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
+    const token = localStorage.getItem('userToken');
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
-            method: "Patch",
+        fetch(API_HOST+"/ruta", {
+            method: "PATCH",
             body: JSON.stringify({
-             nombre:nombre,
-             frecuencia:frecuencia,
-             sentido:sentido,
-             origen:origen,
-             destino:destino,
-             plataforma:plataforma,
-            horarios:horarios
+              id: idParada,
+              nombre: nombre,
+              sentido: sentido,
+              frecuencia: frecuencia,
+              origen: origen,
+              destino: destino,
+              plataforma:plataforma,
+              paradas: paradas
             }),
             headers: {
+                'Authorization': 'basic '+ token, 
               "Content-type": "application/json; charset=UTF-8"
             }
           }).then(response => {
-            resolve(response.json());
+            console.log(response);
+            resolve(response);
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
 
-export function elimarRuta(event) {
+export function elimarRuta(idRuta) {
 
-    const id = document.querySelector('#id').value;
-    if (!id === 'undefined') {
+    if (!idRuta === 'undefined') {
         alert('por favor verifique el id ');
     } else {
-        deleteElimnarRuta(id).then(response => {
-            window.location.href = "/dashboard.html";
+        deleteElimnarRuta(idRuta).then(response => {
+            window.location.href = "/admin.html";
         });
     }
 }
 
 function deleteElimnarRuta(id) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
-            method: "Get",
+        fetch(API_HOST+"/ruta", {
+            method: "Delete",
             body: JSON.stringify({
                 id: id,
             }),
@@ -170,7 +186,7 @@ function deleteElimnarRuta(id) {
               "Content-type": "application/json; charset=UTF-8"
             }
           }).then(response => {
-            resolve(response.json());
+            resolve(response);
         }).catch(err => {
             console.log(err);
             alert(err);
@@ -210,9 +226,8 @@ export function obtenerRutasOrigenDestino(event) {
 }
 
 function  getobtenerRutasOrigenDestino(origen, destino) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/rutas", {
+        fetch(API_HOST+"/ruta/rutas", {
             method: "Get",
             body: JSON.stringify({
                 origen:origen,
@@ -238,9 +253,8 @@ export function obtenerRutasConPlataforma(event) {
     }
 
 function getBuscarRutaConPlataforma() {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/rutass", {
+        fetch(API_HOST+"/ruta/rutass", {
             method: "Get",
             body: JSON.stringify({
             }),
@@ -272,9 +286,8 @@ export function obtenerRutaNombre(event) {
 
 
 function getobtenerRutaNombre() {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/{nombre}", {
+        fetch(API_HOST+"/ruta/{nombre}", {
             method: "Get",
             body: JSON.stringify({
             }),

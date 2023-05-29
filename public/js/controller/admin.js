@@ -1,5 +1,5 @@
 import { doLogout } from '../api/login.js';
-import { crearRuta } from '../api/ruta.js';
+import { crearRuta, doPatchRuta } from '../api/ruta.js';
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
 let paradaActual = null;
@@ -7,11 +7,8 @@ let idParada = null;
 let paradas = [
    
   ];
+let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
 
-let rutas = [
-   
-  ];
-  
   function generateTableHead(table, data) {
     let thead = table.createTHead();
     let row = thead.insertRow();
@@ -82,18 +79,12 @@ let rutas = [
   function addParada(event) {
     const nombre = document.querySelector('#nombreParada');
     const direccion = document.querySelector('#direccion');
-    const latitud = document.querySelector('#latitud');
-    const longitud = document.querySelector('#longitud');
     let parada = {
       nombre: nombre.value,
-      direccion: direccion.value,
-      latitud: latitud.value,
-      longitud: longitud.value
+      direccion: direccion.value
     };
     nombre.value = '';
     direccion.value = '';
-    latitud.value = '';
-    longitud.value = '';
 
     if(paradaActual === null){
       paradas.push(parada);
@@ -128,11 +119,44 @@ let rutas = [
     plataforma.value = '';
   }
 
+  function doEditarRuta(event){
+    event.preventDefault();
+    const nombre =document.querySelector('#nombre');
+    const sentido=document.querySelector('#sentido');
+    const frecuencia=document.querySelector('#frecuencia');
+    const origen=document.querySelector('#origen');
+    const destino=document.querySelector('#destino');
+    const plataforma=document.querySelector('#plataforma');
+    doPatchRuta(rutaEditar.id, nombre.value, sentido.value, frecuencia.value, origen.value, destino.value, plataforma.value, paradas);
+    nombre.value = '';
+    sentido.value = '';
+    frecuencia.value = '';
+    origen.value = '';
+    destino.value = '';
+    plataforma.value = '';
+  }
+
   const btnAgragarParada = document.querySelector('#agregarParada');
   btnAgragarParada.addEventListener('click', addParada);
   
   let table = document.querySelector("#tb-rutas");
- 
+  if(rutaEditar !== null) {
+    const guardarR = document.querySelector('#guardarRuta');
+    guardarR.classList.add("d-none");
+    const editarR = document.querySelector('#editarRuta');
+    editarR.classList.remove("d-none");
+    editarR.addEventListener('click', doEditarRuta);
+    let head = rutaEditar.paradas[0];
+    rutaEditar.paradas.map(function(item) { 
+      delete item.id; 
+      return item; 
+    });
+    paradas = rutaEditar.paradas;
+   generateTableHead(table, Object.keys(head));
+   generateTable(table,paradas);
+  }
 
   const btnGuardarRuta = document.querySelector('#guardarRuta');
   btnGuardarRuta.addEventListener('click', doCrearRuta);
+  
+  

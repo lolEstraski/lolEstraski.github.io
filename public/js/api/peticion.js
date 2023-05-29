@@ -15,7 +15,6 @@ export function crearPeticion(event) {
 
 
 function postPeticion(nombre,descripcion,tipo,fecha) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/pqrs", {
             method: "POST",
@@ -53,7 +52,6 @@ export function listarPeticionesPorNombrePersona(event) {
 
 
 function getListPorNombre(nombre) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"/nombre/nombre, {
             method: "Get",
@@ -89,7 +87,6 @@ export function listarPeticionesPorCorreo(event) {
 
 
 function getListPorCorreo(email) {
-    System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"/email/email, {
             method: "Get",
