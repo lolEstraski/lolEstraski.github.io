@@ -1,32 +1,20 @@
-import { API_HOST, SYSTEM_TOKEN } from './login';
+import { API_HOST, SYSTEM_TOKEN } from './login.js';
 
-export function agregarRutaFavorita(event) {
-
-    const nombre =document.querySelector('#nombre');
-    const sentido=document.querySelector('#sentido');
-    const frecuencia=document.querySelector('#frecuencia');
-    const origen=document.querySelector('#origen');
-    const destino=document.querySelector('#destino');
-    if (! nombre || sentido || frecuencia || origen || destino === 'undefined') {
-        alert('seleccione los campos correspondientes');
-    } else {
-        postAgregarRuta(nombre, sentido, frecuencia, origen, destino).then(response => {
-            window.location.href = "/dashboard.html";
-        });
-    }
+export function agregarRutaFavorita(idRuta) {
+    let idPersona = JSON.parse(localStorage.getItem('login')).id;
+    postAgregarRuta(idRuta, idPersona).then(response => {
+        window.location.href = "/favorita.html";
+    });
 }
 
 
-function  postAgregarRuta(nombre, sentido, frecuencia, origen, destino) {
+function  postAgregarRuta(idRuta, idPasajero) {
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST + "/ruta/favorita", {
             method: "POST",
             body: JSON.stringify({
-              nombre: nombre,
-              sentido: sentido,
-              frecuencia: frecuencia,
-              origen:origen,
-              destino:destino
+              idRuta: idRuta,
+              idPersona: idPasajero
             }),
             headers: {
               "Content-type": "application/json; charset=UTF-8"
@@ -41,30 +29,12 @@ function  postAgregarRuta(nombre, sentido, frecuencia, origen, destino) {
     return promise;
 }
 
-
-export function buscarRutaFavorita(event) {
-
-    const nombre = document.querySelector('#nombre').value;
-    const id = document.querySelector('#id').value;
-
-    if (!nombre  || id === 'undefined') {
-        alert('verifique datos ingresados');
-    } else {
-        getBuscarRutaFavorita(nombre, id).then(response => {
-            window.location.href = "/dashboard.html";
-        });
-    }
-}
-
-
-function getBuscarRutaFavorita(nombre ,id) {
+export function getBuscarRutaFavorita() {
+    
+    const login = JSON.parse(localStorage.getItem('login'));
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
+        fetch(API_HOST+"/ruta/favorita/pasajero/"+login.id, {
             method: "Get",
-            body: JSON.stringify({
-              nombre: nombre,
-              id:id
-            }),
             headers: {
               "Content-type": "application/json; charset=UTF-8"
             }
@@ -78,33 +48,20 @@ function getBuscarRutaFavorita(nombre ,id) {
     return promise;
 }
 
-
-export function eliminarRutaFavorita(event) {
-
-    const id = document.querySelector('#id').value;
-    if (!id === 'undefined') {
-        alert('por favor verifique el id ');
-    } else {
-        deleteEliminarFavorita(id).then(response => {
-            window.location.href = "/dashboard.html";
-        });
-    }
-}
-
-
-
-function deleteEliminarFavorita(id) {
+export function deleteEliminarFavorita(id) {
+    const login = JSON.parse(localStorage.getItem('login'));
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
-            method: "Delate",
+        fetch(API_HOST+"/ruta/favorita", {
+            method: "Delete",
             body: JSON.stringify({
-              id: id,
+              idRuta: id,
+              idPasajero: login.id
             }),
             headers: {
               "Content-type": "application/json; charset=UTF-8"
             }
           }).then(response => {
-            resolve(response.json());
+            resolve(response);
         }).catch(err => {
             console.log(err);
             alert(err);
@@ -130,7 +87,7 @@ export function obtenerRutasFavoritas(event) {
 
 function getObtenerRutasFavoritas(idPersona) {
     let promise = new Promise((resolve, reject) => {
-        fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/favorita", {
+        fetch(API_HOST+"/ruta/favorita", {
             method: "Get",
             body: JSON.stringify({
                 idPersona: idPersona,

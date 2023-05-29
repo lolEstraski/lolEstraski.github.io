@@ -1,5 +1,6 @@
 import { doLogout } from './api/login.js';
 import { getObtenerRutas, doGetDireccionesPorRuta } from './api/ruta.js';
+import { agregarRutaFavorita } from './api/favorita.js';
 
 const loginTitle = document.querySelector('#userName');
 
@@ -44,16 +45,17 @@ let rutas = [
       let editar = document.createTextNode("Ver");
       linkEditar.appendChild(editar);
       cell.appendChild(linkEditar);
-      document.getElementById(element.id).addEventListener("click",renderMap);
+      linkEditar.addEventListener("click",renderMap);
 
 
       let linkFavorito = document.createElement("a");
       linkFavorito.className = "btn btn-sm btn-outline-secondary";
+      linkFavorito.id = element.id;
       let favorito = document.createTextNode("Agregar Favorito");
       linkFavorito.appendChild(favorito);
       cell.appendChild(linkFavorito);
 
-      document.getElementById(element.id).addEventListener("click",agregarAFavorito);
+      linkFavorito.addEventListener("click",agregarAFavorito);
     }
     
   }
@@ -71,6 +73,12 @@ let rutas = [
 
   function redirectToCrear(){
     window.location.href = "/ruta.html";
+  }
+
+  function agregarAFavorito(event){
+    agregarRutaFavorita(this.id).then(ruta=>{
+      alert('Ruta'+ rutas[this.id].nombre + 'agregada a favoritos');
+    });
   }
 
   function renderMap(event){
