@@ -14,6 +14,8 @@ export function crearRuta(nombre, sentido, frecuencia, origen, destino, platafor
 
 export function doGetParadasPorRuta(idRuta){
     const token = localStorage.getItem('userToken');
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST+"/ruta/"+idRuta+"/parada", {
             method: "GET",
@@ -26,13 +28,17 @@ export function doGetParadasPorRuta(idRuta){
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
 
 function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
     const token = localStorage.getItem('userToken');
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST+"/ruta", {
             method: "POST",
@@ -55,7 +61,9 @@ function  postCrearRuta(nombre, sentido, frecuencia, origen, destino, plataforma
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
@@ -77,6 +85,8 @@ export function buscarRuta(event) {
 
 function getBuscarRuta(id) {
     System.setProperty("http.agent", "Chrome");
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
             method: "Get",
@@ -91,7 +101,9 @@ function getBuscarRuta(id) {
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
@@ -117,6 +129,8 @@ export function actualizaRuta(event) {
 
 function patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plataforma, horarios) {
     System.setProperty("http.agent", "Chrome");
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
             method: "Patch",
@@ -137,7 +151,9 @@ function patchActualizarRuta(nombre, frecuencia, sentido, origen, destino, plata
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
@@ -156,6 +172,8 @@ export function elimarRuta(event) {
 
 function deleteElimnarRuta(id) {
     System.setProperty("http.agent", "Chrome");
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta", {
             method: "Get",
@@ -170,7 +188,9 @@ function deleteElimnarRuta(id) {
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
@@ -267,7 +287,7 @@ export function obtenerRutaNombre(event) {
 }
 
 
-function getBuscarRutaNombre() {
+function getobtenerRutaNombre() {
     System.setProperty("http.agent", "Chrome");
     let promise = new Promise((resolve, reject) => {
         fetch("https://pruebaimap.uc.r.appspot.com/"+"/ruta/{nombre}", {
