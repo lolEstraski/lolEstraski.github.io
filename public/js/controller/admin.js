@@ -134,6 +134,7 @@ let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
     origen.value = '';
     destino.value = '';
     plataforma.value = '';
+    localStorage.removeItem('rutaEditar');
   }
 
   const btnAgragarParada = document.querySelector('#agregarParada');
