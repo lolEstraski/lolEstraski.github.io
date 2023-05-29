@@ -110,13 +110,13 @@ let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
     const origen=document.querySelector('#origen');
     const destino=document.querySelector('#destino');
     const plataforma=document.querySelector('#plataforma');
-    crearRuta(nombre.value, sentido.value, frecuencia.value, origen.value, destino.value, plataforma.value, paradas);
+    crearRuta(nombre.value, sentido.value, frecuencia.value, origen.value, destino.value, plataforma.checked, paradas);
     nombre.value = '';
     sentido.value = '';
     frecuencia.value = '';
     origen.value = '';
     destino.value = '';
-    plataforma.value = '';
+    plataforma.checked = false;
   }
 
   function doEditarRuta(event){
@@ -127,13 +127,13 @@ let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
     const origen=document.querySelector('#origen');
     const destino=document.querySelector('#destino');
     const plataforma=document.querySelector('#plataforma');
-    doPatchRuta(rutaEditar.id, nombre.value, sentido.value, frecuencia.value, origen.value, destino.value, plataforma.value, paradas);
+    doPatchRuta(rutaEditar.id, nombre.value, sentido.value, frecuencia.value, origen.value, destino.value, plataforma.checked, paradas);
     nombre.value = '';
     sentido.value = '';
     frecuencia.value = '';
     origen.value = '';
     destino.value = '';
-    plataforma.value = '';
+    plataforma.checked = '';
     localStorage.removeItem('rutaEditar');
   }
 
@@ -142,6 +142,13 @@ let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
   
   let table = document.querySelector("#tb-rutas");
   if(rutaEditar !== null) {
+    document.querySelector('#nombre').value = rutaEditar.nombre;
+    document.querySelector('#sentido').value = rutaEditar.sentido;
+    document.querySelector('#frecuencia').value = rutaEditar.frecuencia;
+    document.querySelector('#origen').value = rutaEditar.origen;
+    document.querySelector('#destino').value = rutaEditar.destino;
+    document.querySelector('#plataforma').checked = rutaEditar.plataforma;
+
     const guardarR = document.querySelector('#guardarRuta');
     guardarR.classList.add("d-none");
     const editarR = document.querySelector('#editarRuta');
@@ -153,8 +160,8 @@ let rutaEditar = JSON.parse(localStorage.getItem('rutaEditar'));
       return item; 
     });
     paradas = rutaEditar.paradas;
-   generateTableHead(table, Object.keys(head));
-   generateTable(table,paradas);
+    generateTableHead(table, Object.keys(head));
+    generateTable(table,paradas);
   }
 
   const btnGuardarRuta = document.querySelector('#guardarRuta');

@@ -120,7 +120,7 @@ function getBuscarRuta(id) {
 
 export function doPatchRuta(idParada, nombre, sentido, frecuencia, origen, destino, plataforma, paradas) {
 
-    if ( !nombre || !sentido || !frecuencia || !origen || !destino || !plataforma || !paradas  === 'undefined') {
+    if ( !nombre || !sentido || !frecuencia || !origen || !destino || !paradas  === 'undefined') {
         alert('seleccione los campos correspondientes');
     } else {
         patchActualizarRuta(idParada, nombre, sentido, frecuencia, origen, destino, plataforma, paradas).then(response => {

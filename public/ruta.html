@@ -15,6 +15,12 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
+  <style>
+    .extrapad{
+      margin-top: 5px;
+      margin-left: 10px;
+    }
+  </style>
   </head>
   <body>
     
@@ -71,9 +77,11 @@
         <input type="text" class="form-control" id="nombre" placeholder="Nombre">
       </div>
 
-      <div class="col">
-        <input type="text" class="form-control" id="plataforma" placeholder="Plataforma">
+      <div class="col form-check form-switch extrapad">
+        <input class="form-check-input" type="checkbox" role="switch" id="plataforma">
+        <label class="form-check-label" for="plataforma">Plataforma</label>
       </div>
+
 
       <div class="col">
         <input type="text" class="form-control" id="sentido" placeholder="Sentido">
