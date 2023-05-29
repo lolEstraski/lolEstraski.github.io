@@ -6,7 +6,7 @@ const loginTitle = document.querySelector('#userName');
 
 const login = JSON.parse(localStorage.getItem('login'));
 
-loginTitle.innerText = 'login.nombre';
+loginTitle.innerText = login.nombre;
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
 
