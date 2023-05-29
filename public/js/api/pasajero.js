@@ -21,6 +21,8 @@ export function registrarPasajero(event) {
 
 
 function postRegistro(nombre,cedula,telefono,email,pass) {
+    const loading = document.querySelector('#loading');
+    loading.classList.remove("d-none");
     let promise = new Promise((resolve, reject) => {
         fetch(API_HOST + "/pasajero", {
             method: "POST",
@@ -40,7 +42,9 @@ function postRegistro(nombre,cedula,telefono,email,pass) {
         }).catch(err => {
             console.log(err);
             alert(err);
-        });
+        }).finally(() => {
+            loading.classList.add("d-none");
+          });
     })
     return promise;
 }
