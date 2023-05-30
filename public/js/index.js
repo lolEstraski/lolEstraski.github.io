@@ -98,7 +98,7 @@ let rutas = [
 
   const buscar = document.querySelector('#buscarRuta');
   buscar.addEventListener("change", (event) => {
-    const ruta = rutas.find(element => element.nombre === event.target.value );
+    const ruta = rutas.find(element => element.nombre.toLowerCase() === event.target.value.toLowerCase() );
     verRuta(ruta.id);
   });
 

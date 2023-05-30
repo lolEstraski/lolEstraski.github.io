@@ -83,13 +83,25 @@ let rutas = [
   }
 
   function renderMap(event){
-    doGetDireccionesPorRuta(this.id).then(ruta=>{
+    verRuta(this.id);
+  }
+
+  function verRuta(id){
+    doGetDireccionesPorRuta(id).then(ruta=>{
       let origen = ruta.origen;
       let destino = ruta.destino;
+      
       let map = document.querySelector('#map');
+      document.querySelector('#nombreRuta').textContent = ruta.nombre;
       map.src = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyBCVdGMcZjYLIBRJAmNyh_3A3HJizfZ-yo&origin="+origen+"&destination="+destino+"&waypoints="+ ruta.paradas.join('|'); +"&mode=driving"
     });
   }
+
+  const buscar = document.querySelector('#buscarRuta');
+  buscar.addEventListener("change", (event) => {
+    const ruta = rutas.find(element => element.nombre.toLowerCase() === event.target.value.toLowerCase() );
+    verRuta(ruta.id);
+  });
 
   let table = document.querySelector("#tb-rutas");
   generateTableHead(table, []);
