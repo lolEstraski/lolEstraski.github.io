@@ -2,6 +2,11 @@ import { doLogout } from '../api/login.js';
 import { crearRuta, doPatchRuta } from '../api/ruta.js';
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
+const loginTitle = document.querySelector('#userName');
+
+const login = JSON.parse(localStorage.getItem('login'));
+
+loginTitle.innerText = login.nombre;
 let paradaActual = null;
 let idParada = null;
 let paradas = [

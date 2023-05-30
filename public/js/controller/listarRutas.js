@@ -2,7 +2,11 @@ import { doLogout } from '../api/login.js';
 import { getObtenerRutas, elimarRuta, doGetParadasPorRuta } from '../api/ruta.js';
 const logoutButton = document.querySelector('#logout');
 logoutButton.addEventListener('click', doLogout);
+const loginTitle = document.querySelector('#userName');
 
+const login = JSON.parse(localStorage.getItem('login'));
+
+loginTitle.innerText = login.nombre;
 let rutas = [
    
   ];
@@ -81,8 +85,6 @@ let rutas = [
   }
 
   let table = document.querySelector("#tb-rutas");
-  generateTableHead(table, []);
-  generateTable(table, rutas);
   listRutas();
 
   const btnCrearRuta = document.querySelector('#crearRuta');
